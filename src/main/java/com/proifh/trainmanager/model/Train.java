@@ -16,19 +16,19 @@ public class Train {
     @Column(name = "description")
     private String description;
     
-    @Column(name = "distance-between-stop")
+    @Column(name = "distance_between_stop")
     private String distanceBetweenStop;
     
-    @Column(name = "max-speed")
+    @Column(name = "max_speed")
     private String maxSpeed;
     
-    @Column(name = "sharing-tracks")
+    @Column(name = "sharing_tracks")
     private boolean sharingTracks;
     
-    @Column(name = "grade-crossing")
+    @Column(name = "grade_crossing")
     private boolean gradeCrossing;
     
-    @Column(name = "train-frequency")
+    @Column(name = "train_frequency")
     private String trainFrequency;
     
     @Column(name = "amenities")
@@ -37,8 +37,7 @@ public class Train {
     public Train() {
     }
 
-    public Train(long id, String name, String description, String distanceBetweenStop, String maxSpeed, boolean sharingTracks, boolean gradeCrossing, String trainFrequency, String amenities) {
-        this.id = id;
+    public Train(String name, String description, String distanceBetweenStop, String maxSpeed, boolean sharingTracks, boolean gradeCrossing, String trainFrequency, String amenities) {
         this.name = name;
         this.description = description;
         this.distanceBetweenStop = distanceBetweenStop;
@@ -51,10 +50,6 @@ public class Train {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getName() {
@@ -119,7 +114,5 @@ public class Train {
 
     public void setAmenities(String amenities) {
         this.amenities = amenities;
-    }
-    
-    
+    }    
 }
