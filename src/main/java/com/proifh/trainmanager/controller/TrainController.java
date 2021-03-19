@@ -23,19 +23,19 @@ public class TrainController {
     @GetMapping("/trains")
     public ResponseEntity<List<Train>> getAllTrains(@RequestParam(required = false) String title) {
         try { 
-            List<Train> tutorials = new ArrayList<Train>();
+            List<Train> trains = new ArrayList<Train>();
             
             if (title == null) {
-                trainRepository.findAll().forEach(tutorials::add);
+                trainRepository.findAll().forEach(trains::add);
             }else{
-                trainRepository.findByTitleContaining(title).forEach(tutorials::add);
+                trainRepository.findByTitleContaining(title).forEach(trains::add);
             }
             
-            if (tutorials.isEmpty()) {
+            if (trains.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
             
-            return new ResponseEntity<>(tutorials, HttpStatus.OK);
+            return new ResponseEntity<>(trains, HttpStatus.OK);
         } catch (Exception e){
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
