@@ -1,29 +1,52 @@
 package com.proifh.trainmanager.model;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "train")
 public class Train {
-
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private String name,
-            description,
-            distance_between_stop,
-            max_speed,
-            train_frequency,
-            amenities;
-    private boolean sharing_tracks, grade_crossing;
+    
+    @Column(name = "name")
+    private String name;
+    
+    @Column(name = "description")
+    private String description;
+    
+    @Column(name = "distance-between-stop")
+    private String distanceBetweenStop;
+    
+    @Column(name = "max-speed")
+    private String maxSpeed;
+    
+    @Column(name = "sharing-tracks")
+    private boolean sharingTracks;
+    
+    @Column(name = "grade-crossing")
+    private boolean gradeCrossing;
+    
+    @Column(name = "train-frequency")
+    private String trainFrequency;
+    
+    @Column(name = "amenities")
+    private String amenities;
 
-    public Train(long id, String name, 
-            String description, String distance_between_stop, 
-            String max_speed, boolean sharing_tracks, boolean grade_crossing, 
-            String train_frequency, String amenities) {
+    public Train() {
+    }
+
+    public Train(long id, String name, String description, String distanceBetweenStop, String maxSpeed, boolean sharingTracks, boolean gradeCrossing, String trainFrequency, String amenities) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.distance_between_stop = distance_between_stop;
-        this.max_speed = max_speed;
-        this.train_frequency = train_frequency;
+        this.distanceBetweenStop = distanceBetweenStop;
+        this.maxSpeed = maxSpeed;
+        this.sharingTracks = sharingTracks;
+        this.gradeCrossing = gradeCrossing;
+        this.trainFrequency = trainFrequency;
         this.amenities = amenities;
-        this.sharing_tracks = sharing_tracks;
-        this.grade_crossing = grade_crossing;
     }
 
     public long getId() {
@@ -50,28 +73,44 @@ public class Train {
         this.description = description;
     }
 
-    public String getDistance_between_stop() {
-        return distance_between_stop;
+    public String getDistanceBetweenStop() {
+        return distanceBetweenStop;
     }
 
-    public void setDistance_between_stop(String distance_between_stop) {
-        this.distance_between_stop = distance_between_stop;
+    public void setDistanceBetweenStop(String distanceBetweenStop) {
+        this.distanceBetweenStop = distanceBetweenStop;
     }
 
-    public String getMax_speed() {
-        return max_speed;
+    public String getMaxSpeed() {
+        return maxSpeed;
     }
 
-    public void setMax_speed(String max_speed) {
-        this.max_speed = max_speed;
+    public void setMaxSpeed(String maxSpeed) {
+        this.maxSpeed = maxSpeed;
     }
 
-    public String getTrain_frequency() {
-        return train_frequency;
+    public boolean isSharingTracks() {
+        return sharingTracks;
     }
 
-    public void setTrain_frequency(String train_frequency) {
-        this.train_frequency = train_frequency;
+    public void setSharingTracks(boolean sharingTracks) {
+        this.sharingTracks = sharingTracks;
+    }
+
+    public boolean isGradeCrossing() {
+        return gradeCrossing;
+    }
+
+    public void setGradeCrossing(boolean gradeCrossing) {
+        this.gradeCrossing = gradeCrossing;
+    }
+
+    public String getTrainFrequency() {
+        return trainFrequency;
+    }
+
+    public void setTrainFrequency(String trainFrequency) {
+        this.trainFrequency = trainFrequency;
     }
 
     public String getAmenities() {
@@ -80,22 +119,6 @@ public class Train {
 
     public void setAmenities(String amenities) {
         this.amenities = amenities;
-    }
-
-    public boolean isSharing_tracks() {
-        return sharing_tracks;
-    }
-
-    public void setSharing_tracks(boolean sharing_tracks) {
-        this.sharing_tracks = sharing_tracks;
-    }
-
-    public boolean isGrade_crossing() {
-        return grade_crossing;
-    }
-
-    public void setGrade_crossing(boolean grade_crossing) {
-        this.grade_crossing = grade_crossing;
     }
     
     
