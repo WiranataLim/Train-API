@@ -27,8 +27,6 @@ public class TrainController {
             
             if (title == null) {
                 trainRepository.findAll().forEach(trains::add);
-            }else{
-                trainRepository.findByTitleContaining(title).forEach(trains::add);
             }
             
             if (trains.isEmpty()) {
