@@ -50,4 +50,11 @@ public class TrainController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+    
+    @GetMapping("/trains/sharing-tracks")
+    public ResponseEntity<List<Train>> getTrainWithSharingTracks(){
+        List<Train> trainData = trainRepository.findBySharingTracks(true);
+        
+        return new ResponseEntity<>(trainData, HttpStatus.OK);
+    }
 }
