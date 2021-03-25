@@ -1,12 +1,15 @@
 package com.proifh.trainmanager.controller;
 
+import com.proifh.trainmanager.model.ErrorMessage;
 import java.util.List;
 
 import com.proifh.trainmanager.model.Train;
 import com.proifh.trainmanager.repository.TrainRepository;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -41,13 +44,20 @@ public class TrainController {
     }
     
     @GetMapping("/trains/{id}")
-    public ResponseEntity<Train> getTrainById(@PathVariable("id") long id){
+    public ResponseEntity<Object> getTrainById(@PathVariable("id") long id){
         Optional<Train> trainData = trainRepository.findById(id);
         
         if(trainData.isPresent()){
             return new ResponseEntity<>(trainData.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            ErrorMessage errmsg = new ErrorMessage(new Date(),"train not found",404);
+            return new ResponseEntity<Object>(errmsg, new HttpHeaders(),HttpStatus.NOT_FOUND);
         }
+    }
+    
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    public class wrongEndPoint extends RuntimeException{
+        ErrorMessage errmsg = new ErrorMessage(new Date(),"invalid endpoint",405);
+        return new ResponseEntity<Object>(errmsg, new HttpHeaders(),HttpStatus.NOT_FOUND);
     }
 }
