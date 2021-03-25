@@ -41,35 +41,6 @@ public class TrainController {
         }
     }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     @DeleteMapping("/trains/{id}")
     public ResponseEntity<Object> deleteTrains(@PathVariable("id") long id) {
         Map<String, String> response = new HashMap();
