@@ -5,6 +5,8 @@ import java.util.List;
 import com.proifh.trainmanager.model.Train;
 import com.proifh.trainmanager.repository.TrainRepository;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -21,6 +23,8 @@ public class TrainController {
 
     @Autowired
     TrainRepository trainRepository;
+    
+    Map<String, String> resp = new HashMap();
 
     @GetMapping("/trains/")
     public ResponseEntity<List<Train>> getAllTrains(@RequestParam(required = false) String title) {
@@ -44,11 +48,12 @@ public class TrainController {
     @GetMapping("/trains/{id}")
     public ResponseEntity<Object> getTrainById(@PathVariable("id") long id) {
         Optional<Train> trainData = trainRepository.findById(id);
+        this.resp.put("message", "train not found");
 
         if (trainData.isPresent()) {
             return new ResponseEntity<>(trainData.get(), HttpStatus.OK);
         } else {
-            return new ResponseEntity<>("{message: “train not found”}", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
         }
     }
 
@@ -58,14 +63,16 @@ public class TrainController {
             List<Train> trainData = new ArrayList<Train>();
 
             trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
-           
+            
             if (trainData.isEmpty()) {
-                return new ResponseEntity<>("{message: “train not found”}", HttpStatus.OK);
+                this.resp.put("message", "train not found");
+                return new ResponseEntity<>(resp, HttpStatus.OK);
             }
 
             return new ResponseEntity<>(trainData, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>("{message: \"invalid endpoint\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+            this.resp.put("message", "invalid endpoint");
+            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
