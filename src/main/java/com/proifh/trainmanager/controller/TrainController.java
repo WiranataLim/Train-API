@@ -69,6 +69,13 @@ public class TrainController {
         }
     }
     
+    @GetMapping("/trains/sharing-tracks")
+    public ResponseEntity<List<Train>> getTrainWithSharingTracks(){
+        List<Train> trainData = trainRepository.findBySharingTracks(true);
+        
+        return new ResponseEntity<>(trainData, HttpStatus.OK);
+    }
+
     @DeleteMapping("/trains/{id}")
     public ResponseEntity<Object> deleteTrains(@PathVariable("id") long id) {
 	try {
