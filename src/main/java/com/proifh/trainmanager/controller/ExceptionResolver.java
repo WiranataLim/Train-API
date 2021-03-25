@@ -19,7 +19,6 @@ public class ExceptionResolver {
     @ResponseStatus(value= HttpStatus.METHOD_NOT_ALLOWED)
     public HashMap<String, String> handleNoHandlerFound(NoHandlerFoundException e, WebRequest request) {
         HashMap<String, String> response = new HashMap<>();
-        response.put("status", "405");
         response.put("message", "invalid endpoint");
         return response;
     }
