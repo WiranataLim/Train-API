@@ -16,7 +16,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @RestControllerAdvice
 public class ExceptionResolver {
     @ExceptionHandler(NoHandlerFoundException.class)
-    @ResponseStatus(value= HttpStatus.NOT_FOUND)
+    @ResponseStatus(value= HttpStatus.METHOD_NOT_ALLOWED)
     public HashMap<String, String> handleNoHandlerFound(NoHandlerFoundException e, WebRequest request) {
         HashMap<String, String> response = new HashMap<>();
         response.put("status", "405");
