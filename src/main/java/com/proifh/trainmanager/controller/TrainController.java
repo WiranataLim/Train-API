@@ -68,4 +68,14 @@ public class TrainController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+    
+    @DeleteMapping("/trains/{id}")
+    public ResponseEntity<HttpStatus> deleteTrains(@PathVariable("id") long id) {
+	try {
+            trainRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+	} catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+	}
+    }
 }
