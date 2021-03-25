@@ -27,7 +27,7 @@ public class TrainController {
     @GetMapping("/trains")
     public ResponseEntity<List<Train>> getAllTrains(@RequestParam(required = false) String title) {
         try { 
-            List<Train> trains = new ArrayList<Train>();
+            List<Train> trains = new ArrayList<>();
             
             if (title == null) {
                 trainRepository.findAll().forEach(trains::add);
@@ -51,13 +51,9 @@ public class TrainController {
             return new ResponseEntity<>(trainData.get(), HttpStatus.OK);
         } else {
             ErrorMessage errmsg = new ErrorMessage(new Date(),"train not found",404);
-            return new ResponseEntity<Object>(errmsg, new HttpHeaders(),HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(errmsg, new HttpHeaders(),HttpStatus.NOT_FOUND);
         }
     }
     
-    @ResponseStatus(value = HttpStatus.NOT_FOUND)
-    public class wrongEndPoint extends RuntimeException{
-        ErrorMessage errmsg = new ErrorMessage(new Date(),"invalid endpoint",405);
-        return new ResponseEntity<Object>(errmsg, new HttpHeaders(),HttpStatus.NOT_FOUND);
-    }
+    
 }
