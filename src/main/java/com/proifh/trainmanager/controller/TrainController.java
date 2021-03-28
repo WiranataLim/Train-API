@@ -95,4 +95,33 @@ public class TrainController {
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
     }
+    
+    @PutMapping("/trains/{id}")
+    public ResponseEntity<Object> updateTrain(@PathVariable("id") String id, @RequestBody Train newTrain){
+        Map<String,String> response = new HashMap<>();
+        try {
+            long idL = Long.parseLong(id);
+            
+            Optional<Train> train = trainRepository.findById(idL);
+            if (train.isPresent()){
+                Train oldTrain = train.get();
+                oldTrain.setAmenities(newTrain.getAmenities());
+                oldTrain.setDescription(newTrain.getDescription());
+                oldTrain.setDistanceBetweenStop(newTrain.getDistanceBetweenStop());
+                oldTrain.setGradeCrossing(newTrain.isGradeCrossing());
+                oldTrain.setMaxSpeed(newTrain.getMaxSpeed());
+                oldTrain.setName(newTrain.getName());
+                oldTrain.setSharingTracks(newTrain.isSharingTracks());
+                oldTrain.setTrainFrequency(newTrain.getTrainFrequency());
+                trainRepository.save(oldTrain);
+                return new ResponseEntity<>("train edited successfully", HttpStatus.OK);
+            } else {
+                response.put("message", "train not found");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (NumberFormatException e){
+            response.put("message", "failed when edit train");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }
 }
