@@ -55,11 +55,6 @@ public class TrainController {
         } else {
 
             return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
-
-            Map<String, String> response = new HashMap();
-            response.put("message", "train not found");
-            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
-
         }
     }
 
@@ -81,17 +76,6 @@ public class TrainController {
             return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-
-    @DeleteMapping("/trains/{id}")
-    public ResponseEntity<HttpStatus> deleteTrains(@PathVariable("id") long id) {
-        try {
-            trainRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
     
     @GetMapping("/trains/sharing-tracks")
     public ResponseEntity<List<Train>> getTrainWithSharingTracks(){
