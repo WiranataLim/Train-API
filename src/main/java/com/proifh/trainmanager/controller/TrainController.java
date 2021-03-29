@@ -23,6 +23,8 @@ public class TrainController {
 
     @Autowired
     TrainRepository trainRepository;
+    
+    Map<String, String> resp = new HashMap();
 
     @GetMapping("/trains/")
     public ResponseEntity<List<Train>> getAllTrains(@RequestParam(required = false) String title) {
@@ -46,32 +48,50 @@ public class TrainController {
     @GetMapping("/trains/{id}")
     public ResponseEntity<Object> getTrainById(@PathVariable("id") long id) {
         Optional<Train> trainData = trainRepository.findById(id);
+        this.resp.put("message", "train not found");
 
         if (trainData.isPresent()) {
             return new ResponseEntity<>(trainData.get(), HttpStatus.OK);
         } else {
+
+            return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+
             Map<String, String> response = new HashMap();
             response.put("message", "train not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
         }
     }
 
     @GetMapping("/trains")
-    public ResponseEntity<List<Train>> getByAmenities(@RequestParam String amenities) {
+    public ResponseEntity<Object> getByAmenities(@RequestParam String amenities) {
         try {
             List<Train> trainData = new ArrayList<Train>();
 
             trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
-
+            
             if (trainData.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                this.resp.put("message", "train not found");
+                return new ResponseEntity<>(resp, HttpStatus.OK);
             }
 
             return new ResponseEntity<>(trainData, HttpStatus.OK);
         } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+            this.resp.put("message", "invalid endpoint");
+            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @DeleteMapping("/trains/{id}")
+    public ResponseEntity<HttpStatus> deleteTrains(@PathVariable("id") long id) {
+        try {
+            trainRepository.deleteById(id);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     
     @GetMapping("/trains/sharing-tracks")
     public ResponseEntity<List<Train>> getTrainWithSharingTracks(){
