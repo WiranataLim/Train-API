@@ -3,5 +3,6 @@ sudo: false
 before_install:
   - chmod +x mvnw
 script:
-- mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V
-- mvn clean verify
+  - java --version
+  - ./mvnw clean install
+  - ./mvnw test
