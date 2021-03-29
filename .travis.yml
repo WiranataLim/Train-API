@@ -1,4 +1,4 @@
 language: java
-jdk: 
-    - oraclejdk11
-script: mvn clean verify
+jdk: oraclejdk8
+install: true
+script: ./mvnw clean install
