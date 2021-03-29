@@ -53,7 +53,13 @@ public class TrainController {
         if (trainData.isPresent()) {
             return new ResponseEntity<>(trainData.get(), HttpStatus.OK);
         } else {
+
             return new ResponseEntity<>(resp, HttpStatus.NOT_FOUND);
+
+            Map<String, String> response = new HashMap();
+            response.put("message", "train not found");
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+
         }
     }
 
@@ -76,6 +82,7 @@ public class TrainController {
         }
     }
 
+
     @DeleteMapping("/trains/{id}")
     public ResponseEntity<HttpStatus> deleteTrains(@PathVariable("id") long id) {
         try {
@@ -83,6 +90,58 @@ public class TrainController {
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+    
+    @GetMapping("/trains/sharing-tracks")
+    public ResponseEntity<List<Train>> getTrainWithSharingTracks(){
+        List<Train> trainData = trainRepository.findBySharingTracks(true);
+        
+        return new ResponseEntity<>(trainData, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/trains/{id}")
+    public ResponseEntity<Object> deleteTrains(@PathVariable("id") long id) {
+        Map<String, String> response = new HashMap();
+        String message = "";
+	try {
+            trainRepository.deleteById(id);
+            message = "train removed successfully";
+            response.put("message", message);
+            return new ResponseEntity<>(response, HttpStatus.OK);
+	} catch (Exception e) {
+            message = "train not found";
+            response.put("message", message);
+            return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+	}
+    }
+    
+    @PutMapping("/trains/{id}")
+    public ResponseEntity<Object> updateTrain(@PathVariable("id") String id, @RequestBody Train newTrain){
+        Map<String,String> response = new HashMap<>();
+        try {
+            long idL = Long.parseLong(id);
+            
+            Optional<Train> train = trainRepository.findById(idL);
+            if (train.isPresent()){
+                Train oldTrain = train.get();
+                oldTrain.setAmenities(newTrain.getAmenities());
+                oldTrain.setDescription(newTrain.getDescription());
+                oldTrain.setDistanceBetweenStop(newTrain.getDistanceBetweenStop());
+                oldTrain.setGradeCrossing(newTrain.isGradeCrossing());
+                oldTrain.setMaxSpeed(newTrain.getMaxSpeed());
+                oldTrain.setName(newTrain.getName());
+                oldTrain.setSharingTracks(newTrain.isSharingTracks());
+                oldTrain.setTrainFrequency(newTrain.getTrainFrequency());
+                trainRepository.save(oldTrain);
+                return new ResponseEntity<>("train edited successfully", HttpStatus.OK);
+            } else {
+                response.put("message", "train not found");
+                return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+            }
+        } catch (NumberFormatException e){
+            response.put("message", "failed when edit train");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
 }
