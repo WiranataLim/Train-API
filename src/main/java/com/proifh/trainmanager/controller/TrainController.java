@@ -26,7 +26,7 @@ public class TrainController {
     
     Map<String, String> resp = new HashMap();
 
-    @GetMapping("/trains/")
+    @GetMapping("/trains")
     public ResponseEntity<List<Train>> getAllTrains(@RequestParam(required = false) String title) {
         try {
             List<Train> trains = new ArrayList<Train>();
@@ -58,24 +58,24 @@ public class TrainController {
         }
     }
 
-    @GetMapping("/trains")
-    public ResponseEntity<Object> getByAmenities(@RequestParam String amenities) {
-        try {
-            List<Train> trainData = new ArrayList<Train>();
-
-            trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
-            
-            if (trainData.isEmpty()) {
-                this.resp.put("message", "train not found");
-                return new ResponseEntity<>(resp, HttpStatus.OK);
-            }
-
-            return new ResponseEntity<>(trainData, HttpStatus.OK);
-        } catch (Exception e) {
-            this.resp.put("message", "invalid endpoint");
-            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @GetMapping("/trains")
+//    public ResponseEntity<Object> getByAmenities(@RequestParam String amenities) {
+//        try {
+//            List<Train> trainData = new ArrayList<Train>();
+//
+//            trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
+//            
+//            if (trainData.isEmpty()) {
+//                this.resp.put("message", "train not found");
+//                return new ResponseEntity<>(resp, HttpStatus.OK);
+//            }
+//
+//            return new ResponseEntity<>(trainData, HttpStatus.OK);
+//        } catch (Exception e) {
+//            this.resp.put("message", "invalid endpoint");
+//            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
     
     @GetMapping("/trains/sharing-tracks")
     public ResponseEntity<List<Train>> getTrainWithSharingTracks(){
