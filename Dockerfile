@@ -14,7 +14,7 @@ COPY start.sh /app/
 COPY pom.xml /app/
 COPY src /app/src/
 WORKDIR /app/
-RUN mvn package -DskipTests && cp target/demo-0.0.1-SNAPSHOT.jar /app/app.jar && mvn clean
+RUN mvn package -DskipTests && cp target/trainmanager-0.0.1-SNAPSHOT.jar /app/app.jar && mvn clean
 
 ENV POSTGRES_USER postgres
 ENV POSTGRES_PASSWORD password
