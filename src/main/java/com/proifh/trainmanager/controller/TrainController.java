@@ -73,7 +73,7 @@ public class TrainController {
             return new ResponseEntity<>(trainData, HttpStatus.OK);
         } catch (Exception e) {
             this.resp.put("message", "invalid endpoint");
-            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(resp, HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
     
