@@ -63,7 +63,16 @@ public class TrainController {
         try {
             List<Train> trainData = new ArrayList<Train>();
 
-            trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
+            trainRepository.findByAmenitiesContainingIgnoreCase(amenities).forEach(trainData::add);
+            
+            for(int i = 0; i< trainData.size(); i++) {
+                if(trainData.get(i).getAmenities().toLowerCase().contains(amenities)) {
+                    trainData = new ArrayList<Train>();
+                    trainRepository.findByAmenitiesContainingIgnoreCase(amenities).
+                            forEach(trainData::add);
+                    break;
+                }
+            }
             
             if (trainData.isEmpty()) {
                 this.resp.put("message", "train not found");
