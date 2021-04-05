@@ -87,15 +87,12 @@ public class TrainController {
     @DeleteMapping("/trains/{id}")
     public ResponseEntity<Object> deleteTrains(@PathVariable("id") long id) {
         Map<String, String> response = new HashMap();
-        String message = "";
 	try {
             trainRepository.deleteById(id);
-            message = "train removed successfully";
-            response.put("message", message);
+            response.put("message", "train removed successfully");
             return new ResponseEntity<>(response, HttpStatus.OK);
 	} catch (Exception e) {
-            message = "train not found";
-            response.put("message", message);
+            response.put("message", "train not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
     }
