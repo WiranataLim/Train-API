@@ -5,7 +5,7 @@ services:
 
 before_script:
   - sudo -u postgres createuser train_controller
-  - psql -c 'create database travis_ci_test' -U postgres
+  - psql -c 'create database train_manager' -U postgres
 
 before_install:
   - chmod +x mvnw
