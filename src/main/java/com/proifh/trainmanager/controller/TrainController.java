@@ -73,7 +73,7 @@ public class TrainController {
             return new ResponseEntity<>(trainData, HttpStatus.OK);
         } catch (Exception e) {
             this.resp.put("message", "invalid endpoint");
-            return new ResponseEntity<>(resp, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(resp, HttpStatus.METHOD_NOT_ALLOWED);
         }
     }
     
@@ -87,15 +87,12 @@ public class TrainController {
     @DeleteMapping("/trains/{id}")
     public ResponseEntity<Object> deleteTrains(@PathVariable("id") long id) {
         Map<String, String> response = new HashMap();
-        String message = "";
 	try {
             trainRepository.deleteById(id);
-            message = "train removed successfully";
-            response.put("message", message);
+            response.put("message", "train removed successfully");
             return new ResponseEntity<>(response, HttpStatus.OK);
 	} catch (Exception e) {
-            message = "train not found";
-            response.put("message", message);
+            response.put("message", "train not found");
             return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
 	}
     }
@@ -125,6 +122,19 @@ public class TrainController {
             }
         } catch (NumberFormatException e){
             response.put("message", "failed when edit train");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
+    }        
+    
+    @PostMapping("/trains")
+    public ResponseEntity<Object> newTrain(@RequestBody Train newTrain){
+        Map<String,String> response = new HashMap<>();
+        try {
+            trainRepository.save(newTrain);
+            response.put("message", "new train added successfully");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (NumberFormatException e){
+            response.put("message", "failed validation");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
     }
