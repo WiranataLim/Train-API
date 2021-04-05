@@ -127,5 +127,18 @@ public class TrainController {
             response.put("message", "failed when edit train");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
+    }        
+    
+    @PostMapping("/trains")
+    public ResponseEntity<Object> newTrain(@RequestBody Train newTrain){
+        Map<String,String> response = new HashMap<>();
+        try {
+            trainRepository.save(newTrain);
+            response.put("message", "new train added successfully");
+            return new ResponseEntity<>(response, HttpStatus.CREATED);
+        } catch (NumberFormatException e){
+            response.put("message", "failed validation");
+            return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+        }
     }
 }
