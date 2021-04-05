@@ -4,6 +4,7 @@ services:
   - postgresql
 
 before_script:
+  - sudo -u postgres createuser train_controller
   - psql -c 'create database travis_ci_test' -U postgres
 
 before_install:
