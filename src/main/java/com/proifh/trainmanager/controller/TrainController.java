@@ -132,62 +132,7 @@ public class TrainController {
     
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    @PostMapping("/trains")
+@PostMapping("/trains")
     public ResponseEntity<Object> newTrain(@RequestBody Train newTrain){
         Map<String,String> response = new HashMap<>();
         try {
