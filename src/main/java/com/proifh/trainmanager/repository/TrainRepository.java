@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface TrainRepository extends JpaRepository<Train, Long> {
     public List<Train> findBySharingTracks(boolean isSharingTracks);
 
-    List<Train> findByAmenitiesContaining(String keyword);
+    List<Train> findByAmenitiesContainingIgnoreCase(String keyword);
 }
