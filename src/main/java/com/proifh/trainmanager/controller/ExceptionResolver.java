@@ -6,6 +6,7 @@
 package com.proifh.trainmanager.controller;
 import java.util.HashMap;
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -16,7 +17,7 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 @RestControllerAdvice
 public class ExceptionResolver {
-    @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class})
+    @ExceptionHandler({NoHandlerFoundException.class, MethodArgumentTypeMismatchException.class, MissingServletRequestParameterException.class})
     @ResponseStatus(value= HttpStatus.METHOD_NOT_ALLOWED)
     public HashMap<String, String> handleNoHandlerFound(Exception e, WebRequest request) {
         System.out.println("Resolving...");
