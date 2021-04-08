@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class Train {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
     @Column(name = "name")
