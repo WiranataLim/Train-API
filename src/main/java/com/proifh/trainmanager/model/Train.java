@@ -1,5 +1,6 @@
 package com.proifh.trainmanager.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 
 @Entity
@@ -7,7 +8,7 @@ import javax.persistence.*;
 public class Train {
     
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    //@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
     @Column(name = "name")
@@ -16,18 +17,23 @@ public class Train {
     @Column(name = "description", columnDefinition="TEXT")
     private String description;
     
+    @JsonProperty("distance-between-stop")
     @Column(name = "distance_between_stop")
     private String distanceBetweenStop;
     
+    @JsonProperty("max-speed")
     @Column(name = "max_speed")
     private String maxSpeed;
     
+    @JsonProperty("sharing-tracks")
     @Column(name = "sharing_tracks")
     private boolean sharingTracks;
     
+    @JsonProperty("grade-crossing")
     @Column(name = "grade_crossing")
     private boolean gradeCrossing;
     
+    @JsonProperty("train-frequency")
     @Column(name = "train_frequency")
     private String trainFrequency;
     

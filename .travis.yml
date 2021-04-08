@@ -1,0 +1,16 @@
+language: java
+sudo: required
+services:
+  - postgresql
+
+before_script:
+  - sudo -u postgres createuser train_controller
+  - psql -c 'create database train_manager' -U postgres
+
+before_install:
+  - chmod +x mvnw
+
+script:
+  - java --version
+  - ./mvnw clean install
+  - ./mvnw test
