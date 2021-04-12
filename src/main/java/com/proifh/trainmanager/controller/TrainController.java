@@ -11,6 +11,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -58,12 +59,23 @@ public class TrainController {
         }
     }
 
-    // @GetMapping("/trains")
+    @GetMapping(path = "/trains", params = "amenities")
     public ResponseEntity<Object> getByAmenities(@RequestParam String amenities) {
         try {
             List<Train> trainData = new ArrayList<Train>();
 
-            trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
+            // trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
+            // //Case sensitive search
+
+            trainRepository.findByAmenitiesContainingIgnoreCase(amenities).forEach(trainData::add);
+
+            for (int i = 0; i < trainData.size(); i++) {
+                if (trainData.get(i).getAmenities().toLowerCase().contains(amenities)) {
+                    trainData = new ArrayList<Train>();
+                    trainRepository.findByAmenitiesContainingIgnoreCase(amenities).forEach(trainData::add);
+                    break;
+                }
+            }
 
             if (trainData.isEmpty()) {
                 this.resp.put("message", "train not found");
@@ -127,7 +139,7 @@ public class TrainController {
     }
 
     @PostMapping("/trains")
-    public ResponseEntity<Object> newTrain(@RequestBody Train newTrain) {
+    public ResponseEntity<Object> newTrain(@Validated @RequestBody Train newTrain) {
         Map<String, String> response = new HashMap<>();
         try {
             trainRepository.save(newTrain);

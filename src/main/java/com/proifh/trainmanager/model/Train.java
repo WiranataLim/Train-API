@@ -1,42 +1,52 @@
 package com.proifh.trainmanager.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sun.istack.NotNull;
 import javax.persistence.*;
 
 @Entity
 @Table(name = "train")
 public class Train {
     
+    @NotNull
     @Id
     //@GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     
+    @NotNull
     @Column(name = "name")
     private String name;
     
+    @NotNull
     @Column(name = "description", columnDefinition="TEXT")
     private String description;
     
+    @NotNull
     @JsonProperty("distance-between-stop")
     @Column(name = "distance_between_stop")
     private String distanceBetweenStop;
     
+    @NotNull
     @JsonProperty("max-speed")
     @Column(name = "max_speed")
     private String maxSpeed;
     
+    @NotNull
     @JsonProperty("sharing-tracks")
     @Column(name = "sharing_tracks")
     private boolean sharingTracks;
     
+    @NotNull
     @JsonProperty("grade-crossing")
     @Column(name = "grade_crossing")
     private boolean gradeCrossing;
     
+    @NotNull
     @JsonProperty("train-frequency")
     @Column(name = "train_frequency")
     private String trainFrequency;
     
+    @NotNull
     @Column(name = "amenities")
     private String amenities;
 
