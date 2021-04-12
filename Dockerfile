@@ -16,8 +16,9 @@ COPY src /app/src/
 WORKDIR /app/
 RUN mvn package -DskipTests && cp target/trainmanager-0.0.1-SNAPSHOT.jar /app/app.jar && mvn clean
 
-ENV POSTGRES_USER postgres
-ENV POSTGRES_PASSWORD password
+ENV POSTGRES_USER train_controller
+ENV POSTGRES_PASSWORD spring123
+ENV POSTGRES_DB train_manager
 
 RUN ["chmod", "+x", "/app/start.sh"]
 EXPOSE 8080
