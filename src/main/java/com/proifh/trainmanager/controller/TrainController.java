@@ -27,7 +27,7 @@ public class TrainController {
     
     Map<String, String> resp = new HashMap();
 
-    @GetMapping("/trains/")
+    @GetMapping("/trains")
     public ResponseEntity<List<Train>> getAllTrains(@RequestParam(required = false) String title) {
         try {
             List<Train> trains = new ArrayList<Train>();
@@ -59,7 +59,7 @@ public class TrainController {
         }
     }
 
-    @GetMapping("/trains")
+    @GetMapping(path = "/trains", params = "amenities")
     public ResponseEntity<Object> getByAmenities(@RequestParam String amenities) {
         try {
             List<Train> trainData = new ArrayList<Train>();
