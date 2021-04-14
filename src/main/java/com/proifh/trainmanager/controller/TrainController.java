@@ -108,7 +108,7 @@ public class TrainController {
     }
     
     @PutMapping("/trains/{id}")
-    public ResponseEntity<Object> updateTrain(@PathVariable("id") String id, @RequestBody Train newTrain){
+    public ResponseEntity<Object> updateTrain(@PathVariable("id") String id, @RequestBody Map<String, Object> newTrain){
         Map<String,String> response = new HashMap<>();
         try {
             long idL = Long.parseLong(id);
@@ -116,21 +116,39 @@ public class TrainController {
             Optional<Train> train = trainRepository.findById(idL);
             if (train.isPresent()){
                 Train oldTrain = train.get();
-                oldTrain.setAmenities(newTrain.getAmenities());
-                oldTrain.setDescription(newTrain.getDescription());
-                oldTrain.setDistanceBetweenStop(newTrain.getDistanceBetweenStop());
-                oldTrain.setGradeCrossing(newTrain.isGradeCrossing());
-                oldTrain.setMaxSpeed(newTrain.getMaxSpeed());
-                oldTrain.setName(newTrain.getName());
-                oldTrain.setSharingTracks(newTrain.isSharingTracks());
-                oldTrain.setTrainFrequency(newTrain.getTrainFrequency());
+       
+                if (newTrain.containsKey("amenities")){
+                    oldTrain.setAmenities((String)newTrain.get("amenities"));
+                }
+                if (newTrain.containsKey("description")){
+                    oldTrain.setDescription((String)newTrain.get("description"));
+                }
+                if (newTrain.containsKey("distance-between-stop")){
+                    oldTrain.setDistanceBetweenStop((String)newTrain.get("distance-between-stop"));
+                }
+                if (newTrain.containsKey("grade-crossing")){
+                    oldTrain.setGradeCrossing((Boolean)newTrain.get("grade-crossing"));
+                }
+                if (newTrain.containsKey("max-speed")){
+                    oldTrain.setMaxSpeed((String)newTrain.get("max-speed"));
+                }
+                if (newTrain.containsKey("name")){
+                    oldTrain.setName((String)newTrain.get("name"));
+                }
+                if (newTrain.containsKey("sharing-tracks")){
+                    oldTrain.setSharingTracks((Boolean)newTrain.get("sharing-tracks"));
+                }
+                if (newTrain.containsKey("train-frequency")){
+                    oldTrain.setTrainFrequency((String)newTrain.get("train-frequency"));
+                }
+                
                 trainRepository.save(oldTrain);
                 return new ResponseEntity<>("train edited successfully", HttpStatus.OK);
             } else {
                 response.put("message", "train not found");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
             }
-        } catch (NumberFormatException e){
+        } catch (Exception e) {
             response.put("message", "failed when edit train");
             return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
         }
