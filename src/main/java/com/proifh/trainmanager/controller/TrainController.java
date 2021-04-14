@@ -113,8 +113,7 @@ public class TrainController {
     public ResponseEntity<Object> updateTrain(@PathVariable("id") String id, @RequestBody Map<String, Object> newTrain){
         Map<String,String> response = new HashMap<>();
         try {
-       
-
+            long idL = Long.parseLong(id);
     
             Optional<Train> train = trainRepository.findById(idL);
             if (train.isPresent()) {
