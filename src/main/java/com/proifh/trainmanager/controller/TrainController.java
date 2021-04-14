@@ -145,7 +145,8 @@ public class TrainController {
                 }
                 
                 trainRepository.save(oldTrain);
-                return new ResponseEntity<>("train edited successfully", HttpStatus.OK);
+                response.put("message", "train edited successfully");
+                return new ResponseEntity<>(response, HttpStatus.OK);
             } else {
                 response.put("message", "train not found");
                 return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
