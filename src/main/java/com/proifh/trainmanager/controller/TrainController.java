@@ -28,19 +28,25 @@ public class TrainController {
     Map<String, String> resp = new HashMap();
 
     @GetMapping("/trains")
-    public ResponseEntity<List<Train>> getAllTrains(@RequestParam(required = false) String title) {
+    public ResponseEntity<Object> getAllTrains(@RequestParam Map<String, String> requestParams) {
         try {
-            List<Train> trains = new ArrayList<Train>();
-
-            if (title == null) {
+            if (requestParams.isEmpty()) {
+                List<Train> trains = new ArrayList<Train>();
                 trainRepository.findAll().forEach(trains::add);
-            }
 
-            if (trains.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
+                if (trains.isEmpty()) {
+                    return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+                }
 
-            return new ResponseEntity<>(trains, HttpStatus.OK);
+                return new ResponseEntity<>(trains, HttpStatus.OK);
+            } else {
+                if (requestParams.containsKey("amenities") && requestParams.size() == 1) {
+                    return this.getByAmenities(requestParams.get("amenities"));
+                } else {
+                    this.resp.put("message", "invalid endpoint");
+                    return new ResponseEntity<>(resp, HttpStatus.METHOD_NOT_ALLOWED);
+                }
+            }
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -59,23 +65,23 @@ public class TrainController {
         }
     }
 
-    @GetMapping(path = "/trains", params = "amenities")
-    public ResponseEntity<Object> getByAmenities(@RequestParam String amenities) {
+    // @GetMapping(path = "/trains", params = "amenities")
+    public ResponseEntity<Object> getByAmenities(String amenities) {
         try {
             List<Train> trainData = new ArrayList<Train>();
 
-            // trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
+            trainRepository.findByAmenitiesContaining(amenities).forEach(trainData::add);
             // //Case sensitive search
 
-            trainRepository.findByAmenitiesContainingIgnoreCase(amenities).forEach(trainData::add);
+            // trainRepository.findByAmenitiesContainingIgnoreCase(amenities).forEach(trainData::add);
 
-            for (int i = 0; i < trainData.size(); i++) {
-                if (trainData.get(i).getAmenities().toLowerCase().contains(amenities)) {
-                    trainData = new ArrayList<Train>();
-                    trainRepository.findByAmenitiesContainingIgnoreCase(amenities).forEach(trainData::add);
-                    break;
-                }
-            }
+            // for (int i = 0; i < trainData.size(); i++) {
+            // if (trainData.get(i).getAmenities().toLowerCase().contains(amenities)) {
+            // trainData = new ArrayList<Train>();
+            // trainRepository.findByAmenitiesContainingIgnoreCase(amenities).forEach(trainData::add);
+            // break;
+            // }
+            // }
 
             if (trainData.isEmpty()) {
                 this.resp.put("message", "train not found");
@@ -110,40 +116,40 @@ public class TrainController {
     }
 
     @PutMapping("/trains/{id}")
-    public ResponseEntity<Object> updateTrain(@PathVariable("id") String id, @RequestBody Map<String, Object> newTrain){
-        Map<String,String> response = new HashMap<>();
+    public ResponseEntity<Object> updateTrain(@PathVariable("id") String id, @RequestBody Map<String, Object> newTrain) {
+        Map<String, String> response = new HashMap<>();
         try {
             long idL = Long.parseLong(id);
     
             Optional<Train> train = trainRepository.findById(idL);
             if (train.isPresent()) {
                 Train oldTrain = train.get();
-       
-                if (newTrain.containsKey("amenities")){
-                    oldTrain.setAmenities((String)newTrain.get("amenities"));
+
+                if (newTrain.containsKey("amenities")) {
+                    oldTrain.setAmenities((String) newTrain.get("amenities"));
                 }
-                if (newTrain.containsKey("description")){
-                    oldTrain.setDescription((String)newTrain.get("description"));
+                if (newTrain.containsKey("description")) {
+                    oldTrain.setDescription((String) newTrain.get("description"));
                 }
-                if (newTrain.containsKey("distance-between-stop")){
-                    oldTrain.setDistanceBetweenStop((String)newTrain.get("distance-between-stop"));
+                if (newTrain.containsKey("distance-between-stop")) {
+                    oldTrain.setDistanceBetweenStop((String) newTrain.get("distance-between-stop"));
                 }
-                if (newTrain.containsKey("grade-crossing")){
-                    oldTrain.setGradeCrossing((Boolean)newTrain.get("grade-crossing"));
+                if (newTrain.containsKey("grade-crossing")) {
+                    oldTrain.setGradeCrossing((Boolean) newTrain.get("grade-crossing"));
                 }
-                if (newTrain.containsKey("max-speed")){
-                    oldTrain.setMaxSpeed((String)newTrain.get("max-speed"));
+                if (newTrain.containsKey("max-speed")) {
+                    oldTrain.setMaxSpeed((String) newTrain.get("max-speed"));
                 }
-                if (newTrain.containsKey("name")){
-                    oldTrain.setName((String)newTrain.get("name"));
+                if (newTrain.containsKey("name")) {
+                    oldTrain.setName((String) newTrain.get("name"));
                 }
-                if (newTrain.containsKey("sharing-tracks")){
-                    oldTrain.setSharingTracks((Boolean)newTrain.get("sharing-tracks"));
+                if (newTrain.containsKey("sharing-tracks")) {
+                    oldTrain.setSharingTracks((Boolean) newTrain.get("sharing-tracks"));
                 }
-                if (newTrain.containsKey("train-frequency")){
-                    oldTrain.setTrainFrequency((String)newTrain.get("train-frequency"));
+                if (newTrain.containsKey("train-frequency")) {
+                    oldTrain.setTrainFrequency((String) newTrain.get("train-frequency"));
                 }
-                
+
                 trainRepository.save(oldTrain);
                 response.put("message", "train edited successfully");
                 return new ResponseEntity<>(response, HttpStatus.OK);
